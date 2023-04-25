@@ -1,0 +1,54 @@
+package com.orderservice1.orderService1.service;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
+
+import com.orderservice1.orderService1.dto.OrderLineItemsDto;
+import com.orderservice1.orderService1.dto.OrderRequest;
+import com.orderservice1.orderService1.model.Order;
+import com.orderservice1.orderService1.model.OrderLineItems;
+import com.orderservice1.orderService1.repository.OrderRepo;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class OrderService {
+	private final OrderRepo orderRepo;
+	private final WebClient webClient;
+	public void placeOrder(OrderRequest orderRequest) {
+		Order order=new Order();
+		order.setOrderNumber(UUID.randomUUID().toString());
+		List<OrderLineItems> orderItems=orderRequest.getOrderItemsDto().stream().map(mapper->mapToOrder(mapper)).collect(Collectors.toList());
+		order.setOrderItems(orderItems);
+		List<String> skuCodes=order.getOrderItems().stream().map(OrderLineItems::getSkuCode).collect(Collectors.toList());
+		//call inventory service
+		Boolean result=webClient.get().uri("http://localhost:8082/api/inventory",
+				UriBuilder->UriBuilder.queryParam("skuCode",skuCodes).build())
+				.retrieve().bodyToMono(Boolean.class).block();
+		if(result) {
+			orderRepo.save(order);
+		}else {
+			throw new IllegalArgumentException("Product is out of stock, please order after some time");
+		}
+	
+		
+	}
+
+	private OrderLineItems mapToOrder(OrderLineItemsDto mapper) {
+		// TODO Auto-generated method stub
+		OrderLineItems orderItems=new OrderLineItems();
+		orderItems.setPrice(mapper.getPrice());
+		orderItems.setQuantity(mapper.getQuantity());
+		orderItems.setSkuCode(mapper.getSkuCode());
+		return orderItems;
+	}
+
+}

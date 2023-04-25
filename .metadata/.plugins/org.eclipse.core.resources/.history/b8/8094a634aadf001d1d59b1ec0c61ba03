@@ -1,0 +1,9 @@
+package com.orderservice1.orderService1.dto;
+
+public class OrderLineItemsDto {
+	private long id;
+	private String skuCode;
+	private long price;
+	private int quantity;
+
+}

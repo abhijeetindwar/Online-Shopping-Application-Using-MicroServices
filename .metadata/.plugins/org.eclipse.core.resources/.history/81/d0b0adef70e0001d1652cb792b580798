@@ -1,0 +1,28 @@
+package com.inventoryservice1.inventoryService1.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.inventoryservice1.inventoryService1.dto.InventoryResponse;
+
+import com.inventoryservice1.inventoryService1.repository.InventoryRepo;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class InventoryService {
+	private final InventoryRepo inventoryRepo;
+	@Transactional(readOnly = true)
+	public List<InventoryResponse> isInStock(List<String> skuCode) {
+		return inventoryRepo.findBySkuCodeIn(skuCode).stream()
+				.map(inventory -> 
+					InventoryResponse.builder().skuCode(inventory
+				.getSkuCode()).isStock(inventory.getQuantity()>0).build()
+				).collect(Collectors.toList());
+	}
+
+}

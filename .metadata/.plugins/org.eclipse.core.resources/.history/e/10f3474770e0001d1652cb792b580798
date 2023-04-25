@@ -1,0 +1,22 @@
+package com.inventoryservice1.inventoryService1.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.inventoryservice1.inventoryService1.model.Inventory;
+import com.inventoryservice1.inventoryService1.repository.InventoryRepo;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class InventoryService {
+	private final InventoryRepo inventoryRepo;
+	@Transactional(readOnly = true)
+	public List<Inventory> isInStock(List<String> skuCode) {
+		return inventoryRepo.findBySkuCodeIn(skuCode);
+	}
+
+}

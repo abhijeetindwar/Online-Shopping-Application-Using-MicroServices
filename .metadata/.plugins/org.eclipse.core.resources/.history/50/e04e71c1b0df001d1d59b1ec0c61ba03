@@ -1,0 +1,5 @@
+package com.inventoryservice1.inventoryService1.controller;
+
+public class InventoryController {
+
+}

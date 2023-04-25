@@ -1,0 +1,5 @@
+package com.orderservice1.orderService1.model;
+
+public class Order {
+
+}

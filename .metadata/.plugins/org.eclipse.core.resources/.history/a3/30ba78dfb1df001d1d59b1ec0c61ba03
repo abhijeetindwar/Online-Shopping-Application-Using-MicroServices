@@ -1,0 +1,9 @@
+package com.inventoryservice1.inventoryService1.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class InventoryService {
+	
+
+}

@@ -1,0 +1,19 @@
+package com.orderservice1.orderService1.service;
+
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import com.orderservice1.orderService1.dto.OrderRequest;
+import com.orderservice1.orderService1.model.Order;
+
+@Service
+public class OrderService {
+	public void placeOrder(OrderRequest orderRequest) {
+		Order order=new Order();
+		order.setOrderNumber(UUID.randomUUID().toString());
+		
+		
+	}
+
+}

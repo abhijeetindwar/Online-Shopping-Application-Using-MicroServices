@@ -1,0 +1,16 @@
+package com.orderservice1.orderService1.model;
+
+import javax.persistence.Entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+@Entity
+@Data
+@Builder
+@AllArgsConstructor
+
+public class Order {
+  
+}

@@ -1,0 +1,10 @@
+package com.orderservice1.orderService1.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="orderItems")
+public class OrderLineItems {
+
+}
